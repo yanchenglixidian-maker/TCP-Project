@@ -1,0 +1,22 @@
+# CMake 编译产出，整个 build 目录全部忽略
+build/
+cmake-build-*/
+
+# 编译产物
+*.o
+*.a
+*.so
+*.out
+net_server
+
+# 编辑器、系统垃圾
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 日志、临时文件
+*.log
+tmp/
