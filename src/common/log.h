@@ -3,6 +3,15 @@
 
 #include <string>
 
-void log_info(const std::string& msg);
+enum class LogLevel
+{
+    Debug,
+    Info,
+    Warning,
+    Error
+};
+
+void log(LogLevel level,const std::string& msg);
+void set_log_level(LogLevel level);
 
 #endif

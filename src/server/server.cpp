@@ -1,5 +1,6 @@
 
 #include "server.h"
+#include "common/log.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <cstring>
@@ -14,14 +15,14 @@ int create_listen_socket(int port)
     int fd = socket(AF_INET,SOCK_STREAM,0);
     if(fd==-1)
     {
-        std::cerr<<strerror(errno)<<'\n';
+        log(LogLevel::Error,std::string("socket failed: ")+std::strerror(errno));
         return -1;
     }
     
     int opt = 1;
     if(setsockopt(fd,SOL_SOCKET,SO_REUSEADDR,&opt,sizeof(opt))==-1)//避免服务器重启上次连接占用地址导致bind失败
     {
-        std::cerr<<strerror(errno)<<'\n';
+        log(LogLevel::Error,std::string("setsockopt failed: ")+std::strerror(errno));
         close(fd);
         return -1;
     }
@@ -33,7 +34,7 @@ int create_listen_socket(int port)
 
     if(bind(fd,(struct sockaddr*)&address,sizeof(address))==-1)//fail
     {
-        std::cerr<<strerror(errno)<<'\n';
+        log(LogLevel::Error,std::string("bind failed: ")+std::strerror(errno));
         close(fd);
         return -1;
     }
@@ -41,7 +42,7 @@ int create_listen_socket(int port)
     //listen
     if(listen(fd,SOMAXCONN)==-1)
     {
-        std::cerr<<strerror(errno)<<'\n';
+        log(LogLevel::Error,std::string("listen failed: ")+std::strerror(errno));
         close(fd);
         return -1;
     }
